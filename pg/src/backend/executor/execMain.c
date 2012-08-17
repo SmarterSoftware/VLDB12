@@ -1791,17 +1791,18 @@ ExecInsert(TupleTableSlot *slot,
 	resultRelationDesc = resultRelInfo->ri_RelationDesc;
 
 	char *s=RelationGetRelationName(resultRelationDesc);
-	if (s[0]=='m')
-	{
-		bool isnull;
-		int new_val ; //DatumGetInt32 (slot_getattr (slot, 1, &isnull));
-		//elog(WARNING, "new val %d", new_val);
-		new_val = DatumGetInt32 (slot_getattr (slot, 2, &isnull));
-		//elog(WARNING, "new val %d", new_val);
+	if (strlen(s)==4)
+		if ((s[0]=='m') && (s[1]=='_') && (s[2]=='u') && (s[3]=='k'))
+		{
+			bool isnull;
+			int new_val ; //DatumGetInt32 (slot_getattr (slot, 1, &isnull));
+			//elog(WARNING, "new val %d", new_val);
+			new_val = DatumGetInt32 (slot_getattr (slot, 2, &isnull));
+			//elog(WARNING, "new val %d", new_val);
 	
-		ModelAddItem(new_val);
-		return;
-	}
+			ModelAddItem(new_val);
+			return;
+		}
 
 	/*
 	 * If the result relation has OIDs, force the tuple's OID to zero so that

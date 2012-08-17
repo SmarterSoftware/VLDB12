@@ -88,6 +88,10 @@ double EvalProbL(int j,int x,int layers)  {
 	DModel *m= (DModel*)&(models[j]);
 	double error=0;
 	double y=0;
+	int length=m->len;
+	if  (m->len < x) {
+//	elog(WARNING," Future %d %d",x,m->len);
+}
 //	double y= Eval(j,x,&error);// no need to compute the value
 	//elog(WARNING, "Model error%f requested error %f",error,err);
 	//btw, compute the next values and add them to the cache
@@ -151,6 +155,7 @@ double GetValue(int x) {
 
 double GetValueL(int x) {
 //	double xx= EvalProbL(0,x,m_layers);	
+
 	if(m_cache==-1) return 199;
 	else if(m_cache== 0) return EvalProbL(0,x,m_layers);
 	if(cache_start==-1) {
@@ -221,7 +226,7 @@ void LoadModules() {
 
 
 //	FILE* f=fopen("/home/khalefa/D3.4/mdata/uk_100.b","r");
-	FILE* f=fopen("/home/khalefa/D3.4/mdata/random.b","r");
+	FILE* f=fopen("/home/khalefa/VLDB12DEMO/mdata/uk.b","r");
 	int n,i;
 	fscanf(f,"%d\n",&n);
 
@@ -301,9 +306,9 @@ HeapTuple ComputeNextTuple(HeapScanDesc scan) {
        	if(a==2) {
 		return NULL;
         }
-	if(a==1) return NULL;
+	//if(a==1) return NULL;
 	if (grp_fnc=='M') o=DBL_MAX;
-	x=scan->index;
+	x=scan->index+1;
 	for(;;){
 		scan->index++;
 		if(a==1) {
@@ -335,8 +340,10 @@ HeapTuple ComputeNextTuple(HeapScanDesc scan) {
 			if (grp_fnc=='a') o=o/cnt;
 			break;	
 		}
-		if ((scan->index>length)&&(grp_len==-1))  return NULL;
-		if (scan->index>length) break;
+		if( m_fend==-1) {
+			if ((scan->index>length)&&(grp_len==-1))  return NULL;
+			if (scan->index>length) break;
+		} 
 	}
 
 //	elog(WARNING,"x %d, o%f",x,o);

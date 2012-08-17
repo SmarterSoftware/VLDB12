@@ -2129,7 +2129,7 @@ static struct config_int ConfigureNamesInt[] =
 			NULL
 		},
 		&m_cache,
-		10, -1, INT_MAX, NULL, NULL
+		0, -1, INT_MAX, NULL, NULL
 	},
 	{
 		{"m_start", PGC_USERSET, QUERY_TUNING_METHOD,

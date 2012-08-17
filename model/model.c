@@ -128,7 +128,7 @@ Model* ReadModel(FILE* f,int j){
 
 void LoadModules() {
 	
-	FILE* f=fopen("/home/khalefa/model/uk2.b","r");
+/*	FILE* f=fopen("/home/khalefa/model/uk2.b","r");
 	int n,i;
 	double xx=0;
 	fscanf(f,"%d\n",&n);
@@ -140,7 +140,7 @@ void LoadModules() {
 	}
 	fclose(f);
 	for(i=0;i<10;i++)
-	printf("i %d v %f\n", i, GetValue(i));
+	printf("i %d v %f\n", i, GetValue(i));*/
 }
 
 int main() { 

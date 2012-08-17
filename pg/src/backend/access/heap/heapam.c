@@ -1450,7 +1450,7 @@ HeapTuple CreateTuple(Relation r, int x, double y)
 	int i;
 	int yy = (int )y;
 	int natts = RelationGetDescr(r)->natts;
-	//elog(WARNING,"%lf",y);
+
 	Datum* values = (Datum *) palloc(natts * sizeof(Datum));
 	bool* isnull = (bool *) palloc(natts * sizeof(bool));
 	 
@@ -1467,63 +1467,16 @@ HeapTuple CreateTuple(Relation r, int x, double y)
 	pfree(isnull);
 	return t;
 }
-HeapTuple
-heap_getnext00(HeapScanDesc scan, ScanDirection direction)
-{
-	char *s=RelationGetRelationName(scan->rs_rd);
-	int i=0;
-	double y=0;
-	int x=0;
-	double y_min=1000000;
-//	elog(WARNING, " Rel %s\n ",s);
-	if ((s[0]=='m') &&  (error_level > 0))
-	{
-//		elog(WARNING, " scan->index %d\n ",scan->index );
-		if (scan->index>162144) return NULL;
-		for(i=0;i<162144;i++){
-//		elog(WARNING, " I %d ",i );
-		scan->index++;
-		if (scan->index>162144) return NULL;
-		y=GetValue(i);
-		//elog(WARNING, "x %d y %f\n",i,y);
-		 if (y<y_min) {
-			x=i;
-			y_min=y;
-		}
-		}
-		return CreateTuple(scan->rs_rd,x, y_min);
-	}
-	
-	return heap_getnext_old(scan,direction);
-}
-	//econtext=CreateExprContext(scan->estate) ;
-	//slot = scan->slot;
-	//qual = scan->qual;
-//	List* qual;
-//	TupleTableSlot *slot;
-//	HeapTuple t;
-
-/*		t=CreateTuple(scan->rs_rd,x, y);
-		ExecStoreTuple(t, slot,  scan->rs_cbuf,   false);	
-		econtext->ecxt_scantuple = slot;
-		if ( ExecQual(qual, econtext, true)){
-			x=scan->index;	
-		heap_freetuple(t);
-			//return t;
-			break;				
-		}
-		heap_freetuple(t);
-*/
 
 HeapTuple
 heap_getnext(HeapScanDesc scan, ScanDirection direction)
 {
-	char *s=RelationGetRelationName(scan->rs_rd);
-	if ((s[0]=='m') &&  ((error_level > 0) || (m_layers >= 0) )  )
+	 char *s=RelationGetRelationName(scan->rs_rd);
+	if (strlen(s)==4)
+	if ((s[0]=='m') &&  (s[1]=='_') && (s[2]=='u') && (s[3]=='k') && ((error_level > 0) || (m_layers >= 0) )  )
 	{
 		return  ComputeNextTuple(scan);
 	}
-	
 	return heap_getnext_old(scan,direction);
 }
 
