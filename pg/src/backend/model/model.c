@@ -44,11 +44,11 @@ double EvalProb(int j,int x,double err)  {
 	int i=0;
 	DModel *m= (DModel*)&(models[j]);
 	double error=0;
-	double y= Eval(j,x,&error);// no need to compute the value
+//	// no need to compute the value
 	//elog(WARNING, "Model error%f requested error %f",error,err);
 	//btw, compute the next values and add them to the cache
 	//	return y;
-	if ((err >error)||(m->nc <= 0)) {
+	if ((err >m->err)||(m->nc <= 0)) {
 		//elog(WARNING," matches the error %p",cache);
 		if((cache != NULL) && (m_cache>0)) {
 			//    elog(WARNING, "Filling from %d len: %d",x+1+i,m_cache);	
@@ -61,6 +61,7 @@ double EvalProb(int j,int x,double err)  {
 			    cache[i]=-1;
 			 }
 		}		
+		double y= Eval(j,x,&error);
 		return y; // found result within the error
 	}
 	//elog(WARNING,"here");
