@@ -29,11 +29,10 @@ endif
 OBJS = $(SUBDIROBJS) $(LOCALOBJS) $(top_builddir)/src/port/libpgport_srv.a
 
 # We put libpgport into OBJS, so remove it from LIBS; also add libldap
-LIBS := $(filter-out -lpgport, $(LIBS)) $(LDAP_LIBS_BE)
+LIBS := $(filter-out -lpgport, $(LIBS)) $(LDAP_LIBS_BE) 
 
 # The backend doesn't need everything that's in LIBS, however
 LIBS := $(filter-out -lz -lreadline -ledit -ltermcap -lncurses -lcurses, $(LIBS))
-
 ##########################################################################
 
 all: submake-libpgport postgres $(POSTGRES_IMP)
